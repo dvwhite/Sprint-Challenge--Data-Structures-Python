@@ -1,4 +1,6 @@
 import time
+import ipdb
+from binary_search_tree import BSTNode
 
 start_time = time.time()
 
@@ -12,15 +14,34 @@ f.close()
 
 duplicates = []  # Return the list of duplicates in this data structure
 
-# Replace the nested for loops below with your improvements
-for name_1 in names_1:
-    for name_2 in names_2:
-        if name_1 == name_2:
-            duplicates.append(name_1)
+# The naive approach that the sprint had originally
+# time complexity: O(n^2) + O(1) = O(n^2)
+# runtime: 6.548135757446289 seconds
+# for name_1 in names_1:
+#     for name_2 in names_2:
+#         if name_1 == name_2:
+#             duplicates.append(name_1)
+
+
+# A more efficient approach using binary search trees
+# Add all names in names_1 to a binary search tree
+bst = BSTNode("a")
+
+for name in names_1:  # O(n)
+    # ipdb.set_trace()
+    bst.insert(name)  # O(nlogn)
+# This runs in the worst case of O(nlogn)
+
+for name in names_2:  # O(n)
+    if bst.contains(name):  # O(nlogn)
+        duplicates.append(name)  # O(1)
+# This also runs in the worst case of O(nlogn)
+# --------------------------------------------------
+# 2O(nlogn) reduces to O(nlogn)
 
 end_time = time.time()
-print (f"{len(duplicates)} duplicates:\n\n{', '.join(duplicates)}\n\n")
-print (f"runtime: {end_time - start_time} seconds")
+print(f"{len(duplicates)} duplicates:\n\n{', '.join(duplicates)}\n\n")
+print(f"runtime: {end_time - start_time} seconds")
 
 # ---------- Stretch Goal -----------
 # Python has built-in tools that allow for a very efficient approach to this problem
