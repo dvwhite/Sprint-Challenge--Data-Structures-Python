@@ -40,30 +40,26 @@ class LinkedList:
         return False
 
     def reverse_list(self, node, prev):
-        nodes = []
-        current = node
-        while node is not None:
-            next = node.next_node
-            nodes.append(node)
-            node.next_node = None
-            node = next
-
-        print([node.value for node in nodes])
-
-        for node in nodes:
-            print(node.value)
-            next = self.head.next_node
-            self.head = node
-            self.head.next_node = next
-
-        #print([node.value for node in nodes])
-
-        # if prev is None:
-        #     nodes.append(node)
-        # else:
-        #     if prev.prev:
-        #         nodes.append(prev.reverse_list(prev, prev.prev))
-        # return nodes
+        if node is None:
+            return None
+        # Track all visited nodes to allow iteration without cycles
+        visited = []
+        orig_head = self.head
+        while node not in visited:
+            # Add all but the head to the head in ascending order
+            # reverses the list
+            if node != self.head:
+                self.add_to_head(node.value)
+                if prev:
+                    if node.next_node and not prev is orig_head:
+                        prev.next_node = node.next_node
+                    else:
+                        prev.next_node = None
+            visited.append(node)
+            # You only need a prev and next if there is a next
+            if node.next_node:
+                prev = node
+                node = node.next_node
 
     def __str__(self):
         values = ""
